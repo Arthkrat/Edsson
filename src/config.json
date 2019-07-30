@@ -1,0 +1,25 @@
+{
+    "schema" : {
+        "rows" : [
+            {
+                "columns" : [
+                    {
+                        "elements" : [
+                            {
+                                "id" : "",
+                                "type" : "",
+                                "defaultValue" : ""
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "actions" : [
+        {
+            "type" : "submit",
+            "label" : "Save"
+        }
+    ]
+}
