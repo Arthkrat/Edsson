@@ -14,15 +14,15 @@
             Press SAVE to get your layout!
         </v-list-item-subtitle>
     </v-list-item-content>
-    <v-flex justify-center>
-        <v-btn class="px-15 mx-auto" dark color="teal lighten-1" elevation="5" block @click="saveValues">{{ getConfig.actions[0].label }}</v-btn> 
-    </v-flex>
-        <v-flex row sm12  v-for="(row,rowIndex) in getConfig.schema.rows"  :key= rowIndex>
-            <v-col sm6  v-for="(col, colIndex) in row.columns "   :key=colIndex>
-            <div v-for="(element, index) in col.elements" :key=index >  
-                <v-text-field class="pa-0" label=id type="text" v-model="element.id">  </v-text-field>
+    <v-form>
+        <v-btn class="px-15 mx-auto" dark color="teal lighten-1" elevation="5" block  @click="saveValues">{{ getConfig.actions[0].label }}</v-btn> 
+    
+        <v-flex row sm12  v-for="(row,rowIndex) in getConfig.schema.rows"  :key="`row-${rowIndex}`">
+            <v-col sm6  v-for="(col, colIndex) in row.columns "   :key="`col-${colIndex}`">
+            <div v-for="(element, elIndex) in col.elements" :key="`el-${elIndex}`" >  
+                <v-text-field class="pa-0" label=id type="text" v-model="element.id" @keypress.enter="saveValues">  </v-text-field>
                 <v-select class="pa-0" v-model="element.type" :items="types" label="type" ></v-select> 
-                <v-text-field class="pa-0" label=Value :type="element.type" v-model="element.defaultValue" @keydown="validate($event, col.elements, index)"></v-text-field>
+                <v-text-field class="pa-0" label=Value :type="element.type" v-model="element.defaultValue" @keydown="validate($event, col.elements, elIndex)" @keypress.enter="saveValues"></v-text-field>
             </div>
           
             </v-col>
@@ -31,12 +31,12 @@
         <v-flex sm12> 
             <v-btn class="mx-auto" fab dark small color="teal lighten-2"  @click="addRow()">+</v-btn>
         </v-flex>
-      
+      </v-form>
  </v-container>
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 
 export default {
     data(){
@@ -51,14 +51,12 @@ export default {
         ]),
     },
         methods: {
-            addRow(){
-                this.$store.commit('addRow');
-            },
-            addCol(index){
-                this.$store.commit('addCol', index);
-            },
+            ...mapActions([
+                'addRow',
+                'addCol'
+            ]),
             saveValues(){
-                this.$store.commit('saveValues');
+                this.$store.dispatch('saveValues');
                 this.$router.push('/values')
             },
             validate($event, elements, index){
@@ -66,9 +64,6 @@ export default {
                 : true ;
             }
         }
-  /*  created() {
-        this.$store.dispatch('getConfigFile');
-    }*/
 }
 </script>
 

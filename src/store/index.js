@@ -8,9 +8,6 @@ export const store = new Vuex.Store({
         savedValues: null
     },
     getters: {
-        getA(state) {
-            return state.a;
-        },
         getConfig(state) {
             return config;
         },
@@ -48,13 +45,15 @@ export const store = new Vuex.Store({
             state.savedValues = config.schema.rows;
         }
     },
- /*   actions: {
-        getConfigFile(store){
-            
-            store.commit('setConfig', data)
-            
-            
-
-        }
-    }*/
+    actions: {
+       addRow(store){
+            store.commit('addRow');
+       },
+       addCol(store, index){
+           store.commit('addCol', index)
+       },
+       saveValues(store){
+           store.commit('saveValues')
+       }
+    }
 })
